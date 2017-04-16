@@ -1,0 +1,9 @@
+<h2>
+<a href="{% url 'ed4all:home' %}">Education 4</a>
+{% if book %}
+&gt; <a href="{% url 'ed4all:course_view' course.id %}">{{ course.name }}</a>
+{% endif %}
+{% if title %}
+&gt; {{ title }}
+{% endif %}
+</h2>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+{% include "ed4all/nav.html" with course=course title="View" %}
+
+Ranking: {{ course.Ranking }}
+
+<h2>Reviews</h2>
+<ul>
+    {% for review in reviews %}
+    <li>
+        {{ review.name }}<br>
+        {{ review.review|linebreaks }}
+        <br>
+        <a href="{% url 'ed4all:review_edit' review.id %}">edit</a>
+        <a href="{% url 'ed4all:review_delete' review.id %}">delete</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'ed4all:review_new' course.id %}">New Review</a>
+{% endblock %}

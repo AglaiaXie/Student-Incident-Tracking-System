@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Course List{% endblock %}
+
+{% block content %}
+{% include "ed4all/nav.html" %}
+
+Courses
+
+<ul>
+    {% for course in courses %}
+    <li>{{ course.Course_Name }}  ({{ course.ranking }} Pages)
+    <a href="{% url 'ed4all:course_view' course.id %}">view</a>
+    <a href="{% url 'ed4all:course_edit' course.id %}">edit</a>
+    <a href="{% url 'ed4all:course_delete' course.id %}">delete</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'ed4all:course_new' %}">New</a>
+{% endblock %}
