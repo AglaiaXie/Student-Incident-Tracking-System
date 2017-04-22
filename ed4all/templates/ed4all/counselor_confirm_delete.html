@@ -1,10 +1,13 @@
-{% extends "base.html" %}
-
-{% block content %}
-{% include "ed4all/nav.html" with course=course title="Delete" %}
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
 <form method="post">{% csrf_token %}
     Are you sure you want to delete "{{ object }}" ?
     <input type="submit" value="Submit" />
 </form>
-{% endblock %}
+</body>
+</html>

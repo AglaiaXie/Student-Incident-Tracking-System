@@ -1,96 +1,33 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.forms import ModelForm
+from .models import Student, StudentAdvisorCounselor, StudentProfile, StudentIncident, StudentIssue, Faculty, Issue, Incident, Request
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.views.generic import TemplateView,ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.core.urlresolvers import reverse_lazy
 
-from ed4all.models import Course, Review
+def index(request):
+    return render(request,'ed4all/index.html')
 
-class CourseForm(ModelForm):
-    class Meta:
-        model = Course
-        fields = ['Course_Name', 'Ranking']
+class CounselorCreate(CreateView):
+    model = StudentAdvisorCounselor
+    fields = ['counselor_id','counselor_name', 'email_address']
+    template_name = 'ed4all/counselor_form.html'
+    success_url = reverse_lazy('ed4all:index')
 
-class ReviewForm(ModelForm):
-    class Meta:
-        model = Review
-        fields = ['name', 'review']
+class CounselorRead(ListView):
+    model = StudentAdvisorCounselor
+    template_name = 'ed4all/counselor_list.html'
+    #def get_queryset(self):
+       # return StudentAdvisorCounselor.objects.all()
 
-def home(request, template_name='ed4all/home.html'):
-    courses = Course.objects.all()
-    ctx = {}
-    ctx['courses'] = courses
-    return render(request, template_name, ctx)
+class CounselorUpdate(UpdateView):
+    model = StudentAdvisorCounselor
+    success_url = reverse_lazy('ed4all:view-counselor')
+    fields = ['counselor_id','counselor_name', 'email_address']
+    template_name = 'ed4all/counselor_update.html'
 
+class CounselorDelete(DeleteView):
+    model = StudentAdvisorCounselor
+    success_url = reverse_lazy('ed4all:view-counselor')
+    template_name = 'ed4all/counselor_confirm_delete.html'
 
-def course_view(request, pk, template_name='ed4all/course_view.html'):
-    course = get_object_or_404(Course, pk=pk)
-    reviews = Review.objects.filter(course=course)
-    ctx = {}
-    ctx["courses"] = course
-    ctx["reviews"] = reviews
-    return render(request, template_name, ctx)
-
-def course_create(request, template_name='ed4all/course_form.html'):
-    form = CourseForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect('ed4all:home')
-    ctx = {}
-    ctx["form"] = form
-    return render(request, template_name, ctx)
-
-def course_update(request, pk, template_name='ed4all/course_form.html'):
-    course= get_object_or_404(Course, pk=pk)
-    form = CourseForm(request.POST or None, instance=course)
-    if form.is_valid():
-        form.save()
-        return redirect('ed4all:home')
-    ctx = {}
-    ctx["form"] = form
-    ctx["course"] = course
-    return render(request, template_name, ctx)
-
-def course_delete(request, pk, template_name='ed4all/course_confirm_delete.html'):
-    course= get_object_or_404(Course, pk=pk)
-    if request.method=='POST':
-        course.delete()
-        return redirect('ed4all:home')
-    ctx = {}
-    ctx["object"] = course
-    ctx["book"] = course
-    return render(request, template_name, ctx)
-
-
-def review_create(request, parent_pk, template_name='books_pc_multi_view/review_form.html'):
-    book = get_object_or_404(Course, pk=parent_pk)
-    form = ReviewForm(request.POST or None)
-    if form.is_valid():
-        review = form.save(commit=False)
-        review.book = book
-        review.save()
-        return redirect('books_pc_multi_view:book_view', parent_pk)
-    ctx = {}
-    ctx["form"] = form
-    ctx["book"] = book
-    return render(request, template_name, ctx)
-
-def review_update(request, pk, template_name='ed4all/review_form.html'):
-    review = get_object_or_404(Review, pk=pk)
-    parent_pk = review.course.pk
-    form = ReviewForm(request.POST or None, instance=review)
-    if form.is_valid():
-        form.save()
-        return redirect('ed4all:course_view', parent_pk)
-    ctx = {}
-    ctx["form"] = form
-    ctx["course"] = review.course
-    return render(request, template_name, ctx)
-
-def review_delete(request, pk, template_name='ed4all/review_confirm_delete.html'):
-    review = get_object_or_404(Review, pk=pk)
-    parent_pk = review.course.pk
-    if request.method=='POST':
-        review.delete()
-        return redirect('ed4all:course_view', parent_pk)
-    ctx = {}
-    ctx["object"] = review
-    ctx["course"] = review.course
-    return render(request, template_name, ctx)

@@ -1,2 +1,0 @@
-# Student-Incident-Tracking-System
-Student Advisor Counselors should be able to get an overview of students who are in need of their service due to transcripts, medical records, career advice, classes, and much more. If the student advisor counselor can see an overview of what is missing from the student in an organized way. As a result, he or she can address the needs of the students and notify the director and faculty member can advise on the student if circumstance is applicable. Allow the advisor to send reminders to students to turn in documents.
