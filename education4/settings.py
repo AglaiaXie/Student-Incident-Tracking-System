@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'theme',
 ]
 
 MIDDLEWARE = [
@@ -77,10 +78,10 @@ WSGI_APPLICATION = 'education4.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'student',
-        'USER': 'education4',
-        'PASSWORD': 'education4',
-        'HOST':'incidentdb.cqfewbeudykx.us-west-2.rds.amazonaws.com',
+        'NAME': 'Counseling',
+        'USER': 'education1',
+        'PASSWORD': 'education1',
+        'HOST':'counselingdb.cf3senbsidb3.us-east-1.rds.amazonaws.com',
         'PORT':'3306',
     }
 }
@@ -122,4 +123,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL ='/static/'
+
+

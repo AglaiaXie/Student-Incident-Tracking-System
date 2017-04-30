@@ -10,306 +10,90 @@ from __future__ import unicode_literals
 from django.db import models
 
 
-class Faculty(models.Model):
-    faculty_id = models.CharField(db_column='Faculty_ID', primary_key=True, max_length=8)  # Field name made lowercase.
-    faculty_name = models.CharField(db_column='Faculty_Name', max_length=45)  # Field name made lowercase.
-    email_address = models.CharField(db_column='Email_Address', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    position = models.CharField(db_column='Position', max_length=10, blank=True, null=True)  # Field name made lowercase.
+class Appointment(models.Model):
+    appointmentid = models.AutoField(db_column='appointmentID', primary_key=True)  # Field name made lowercase.
+    studentid = models.ForeignKey('Student', models.DO_NOTHING, db_column='studentID_id', blank=True, null=True)  # Field name made lowercase.
+    counselorid = models.ForeignKey('Counselor', models.DO_NOTHING, db_column='counselorID_id', blank=True, null=True)  # Field name made lowercase.
+    astarttime = models.DateTimeField(db_column='aStartTime', blank=True, null=True)  # Field name made lowercase.
+    aendtime = models.DateTimeField(db_column='aEndTime', blank=True, null=True)  # Field name made lowercase.
+    requestcomment = models.CharField(db_column='requestComment', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    requesttype = models.CharField(db_column='requestType', max_length=10, blank=True, null=True)  # Field name made lowercase.
+    timeofsubmittingrequest = models.DateTimeField(db_column='timeOfSubmittingRequest', blank=True, null=True)  # Field name made lowercase.
+    requeststarttime = models.DateTimeField(db_column='requestStartTime', blank=True, null=True)  # Field name made lowercase.
+    requestendtime = models.DateTimeField(db_column='requestEndTime', blank=True, null=True)  # Field name made lowercase.
+    status = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'Faculty'
+        db_table = 'appointment'
+
+
+class Counselor(models.Model):
+    counselorid = models.CharField(db_column='counselorID', primary_key=True, max_length=10)  # Field name made lowercase.
+    counselorlname = models.CharField(db_column='counselorLName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    counselorfname = models.CharField(db_column='counselorFName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    counselorpassword = models.CharField(db_column='counselorPassword', max_length=50, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'counselor'
+
+
+class Educator(models.Model):
+    educatorid = models.CharField(db_column='educatorID', primary_key=True, max_length=10)  # Field name made lowercase.
+    educatorlname = models.CharField(db_column='educatorLName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    educatorfname = models.CharField(db_column='educatorFName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    educatortype = models.CharField(db_column='educatorType', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    educatoremailaddress = models.CharField(db_column='educatorEmailAddress', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    educatorpassword = models.CharField(db_column='educatorPassword', max_length=50, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'educator'
 
 
 class Incident(models.Model):
-    incident_id = models.CharField(db_column='Incident_ID', primary_key=True, max_length=8)  # Field name made lowercase.
-    incident_type = models.CharField(db_column='Incident_Type', max_length=45)  # Field name made lowercase.
-    location = models.CharField(db_column='Location', max_length=45)  # Field name made lowercase.
-    kind_of_students = models.CharField(db_column='Kind_of_Students', max_length=45)  # Field name made lowercase.
-    group_or_individual = models.CharField(db_column='Group_or_Individual', max_length=10, blank=True, null=True)  # Field name made lowercase.
+    incidentid = models.AutoField(db_column='incidentID', primary_key=True)  # Field name made lowercase.
+    studentid = models.ForeignKey('Student', models.DO_NOTHING, db_column='studentID_id', blank=True, null=True)  # Field name made lowercase.
+    incidenttype = models.CharField(db_column='incidentType', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    location = models.CharField(max_length=45, blank=True, null=True)
+    educatorid = models.ForeignKey(Educator, models.DO_NOTHING, db_column='educatorID_id', blank=True, null=True)  # Field name made lowercase.
+    counselorid = models.ForeignKey(Counselor, models.DO_NOTHING, db_column='counselorID_id', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'Incident'
-
-
-class Issue(models.Model):
-    issue_id = models.CharField(db_column='Issue_ID', primary_key=True, max_length=8)  # Field name made lowercase.
-    issue_name = models.CharField(db_column='Issue_Name', max_length=45)  # Field name made lowercase.
-    issue_type = models.CharField(db_column='Issue_Type', max_length=45)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'Issue'
-
-
-class Request(models.Model):
-    request_id = models.CharField(db_column='Request_ID', primary_key=True, max_length=8)  # Field name made lowercase.
-    request_type = models.CharField(db_column='Request_Type', max_length=45)  # Field name made lowercase.
-    time_of_appointment = models.DateTimeField(db_column='Time_of_Appointment')  # Field name made lowercase.
-    time_of_submitted_appointment = models.DateTimeField(db_column='Time_of_Submitted_Appointment')  # Field name made lowercase.
-    student_id = models.IntegerField(db_column='Student_ID')  # Field name made lowercase.
-    counselor_id = models.IntegerField(db_column='Counselor_ID')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'Request'
+        db_table = 'incident'
 
 
 class Student(models.Model):
-    student_id = models.CharField(db_column='Student_ID', primary_key=True, max_length=8)  # Field name made lowercase.
-    student_name = models.CharField(db_column='Student_Name', max_length=45)  # Field name made lowercase.
-    email_address = models.CharField(db_column='Email_Address', max_length=45, blank=True, null=True)  # Field name made lowercase.
-    counselor_id = models.CharField(db_column='Counselor_ID', max_length=8, blank=True, null=True)  # Field name made lowercase.
+    studentid = models.CharField(db_column='studentID', primary_key=True, max_length=10)  # Field name made lowercase.
+    studentlname = models.CharField(db_column='studentLName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    studentfname = models.CharField(db_column='studentFName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    studentemailaddress = models.CharField(db_column='studentEmailAddress', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    studentage = models.IntegerField(db_column='studentAge', blank=True, null=True)  # Field name made lowercase.
+    studentdob = models.DateField(db_column='studentDOB', blank=True, null=True)  # Field name made lowercase.
+    street = models.CharField(max_length=50, blank=True, null=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
+    zip = models.IntegerField(blank=True, null=True)
+    program = models.CharField(max_length=30, blank=True, null=True)
+    trackrepid = models.ForeignKey('self', models.DO_NOTHING, db_column='trackRepID', blank=True, null=True)  # Field name made lowercase.
+    studentpassword = models.CharField(db_column='studentPassword', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    studenttype = models.CharField(db_column='studentType', max_length=15, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'Student'
+        db_table = 'student'
 
 
-class StudentAdvisorCounselor(models.Model):
-    counselor_id = models.CharField(db_column='Counselor_ID', primary_key=True, max_length=8)  # Field name made lowercase.
-    counselor_name = models.CharField(db_column='Counselor_Name', max_length=45)  # Field name made lowercase.
-    email_address = models.CharField(db_column='Email_Address', max_length=45, blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'Student_Advisor_Counselor'
-
-
-class StudentIncident(models.Model):
-    student_id = models.CharField(db_column='Student_ID', max_length=8)  # Field name made lowercase.
-    incident_id = models.IntegerField(db_column='Incident_ID')  # Field name made lowercase.
-    faculty_id = models.IntegerField(db_column='Faculty_ID')  # Field name made lowercase.
+class Studentprofile(models.Model):
+    profileid = models.CharField(db_column='profileID', primary_key=True, max_length=10)  # Field name made lowercase.
+    category = models.CharField(max_length=50, blank=True, null=True)
+    label = models.CharField(max_length=100, blank=True, null=True)
+    seq = models.CharField(max_length=100, blank=True, null=True)
+    content = models.CharField(max_length=100, blank=True, null=True)
+    studentid = models.ForeignKey(Student, models.DO_NOTHING, db_column='studentID', blank=True, null=True)  # Field name made lowercase.
+    studentprofilecol = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'Student_Incident'
-        unique_together = (('student_id', 'incident_id'),)
-
-
-class StudentIssue(models.Model):
-    student_id = models.CharField(db_column='Student_ID', max_length=8)  # Field name made lowercase.
-    issue_id = models.CharField(db_column='Issue_ID', max_length=4)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'Student_Issue'
-        unique_together = (('student_id', 'issue_id'),)
-
-
-class StudentProfile(models.Model):
-    student_id = models.CharField(db_column='Student_ID', primary_key=True, max_length=8)  # Field name made lowercase.
-    gpa = models.DecimalField(db_column='GPA', max_digits=3, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
-    credits_completed = models.CharField(db_column='Credits_Completed', max_length=8, blank=True, null=True)  # Field name made lowercase.
-    current_semester = models.CharField(db_column='Current_Semester', max_length=45)  # Field name made lowercase.
-    program = models.CharField(db_column='Program', max_length=45)  # Field name made lowercase.
-    school = models.CharField(db_column='School', max_length=45)  # Field name made lowercase.
-    track_representitve = models.CharField(db_column='Track_Representitve', max_length=30, blank=True, null=True)  # Field name made lowercase.
-    international_or_not = models.CharField(db_column='International_or_not', max_length=45, blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'Student_Profile'
-
-
-class AuthGroup(models.Model):
-    name = models.CharField(unique=True, max_length=80)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_group'
-
-
-class AuthGroupPermissions(models.Model):
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_group_permissions'
-        unique_together = (('group', 'permission'),)
-
-
-class AuthPermission(models.Model):
-    name = models.CharField(max_length=255)
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
-    codename = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_permission'
-        unique_together = (('content_type', 'codename'),)
-
-
-class AuthUser(models.Model):
-    password = models.CharField(max_length=128)
-    last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.IntegerField()
-    username = models.CharField(unique=True, max_length=30)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.CharField(max_length=254)
-    is_staff = models.IntegerField()
-    is_active = models.IntegerField()
-    date_joined = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user'
-
-
-class AuthUserGroups(models.Model):
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_groups'
-        unique_together = (('user', 'group'),)
-
-
-class AuthUserUserPermissions(models.Model):
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_user_permissions'
-        unique_together = (('user', 'permission'),)
-
-
-class DjangoAdminLog(models.Model):
-    action_time = models.DateTimeField()
-    object_id = models.TextField(blank=True, null=True)
-    object_repr = models.CharField(max_length=200)
-    action_flag = models.SmallIntegerField()
-    change_message = models.TextField()
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'django_admin_log'
-
-
-class DjangoContentType(models.Model):
-    app_label = models.CharField(max_length=100)
-    model = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'django_content_type'
-        unique_together = (('app_label', 'model'),)
-
-
-class DjangoMigrations(models.Model):
-    app = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    applied = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'django_migrations'
-
-
-class Ed4AllCourse(models.Model):
-    course_id = models.CharField(db_column='Course_ID', max_length=10)  # Field name made lowercase.
-    course_name = models.CharField(db_column='Course_Name', max_length=45)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'ed4all_course'
-
-
-class Ed4AllFaculty(models.Model):
-    faculty_name = models.CharField(db_column='Faculty_Name', max_length=45)  # Field name made lowercase.
-    email_address = models.CharField(db_column='Email_Address', max_length=45)  # Field name made lowercase.
-    position = models.CharField(db_column='Position', max_length=10)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'ed4all_faculty'
-
-
-class Ed4AllIncident(models.Model):
-    incident_id = models.CharField(db_column='Incident_ID', max_length=10)  # Field name made lowercase.
-    incident_type = models.CharField(db_column='Incident_Type', max_length=45)  # Field name made lowercase.
-    location = models.CharField(db_column='Location', max_length=45)  # Field name made lowercase.
-    kind_of_students = models.CharField(db_column='Kind_of_Students', max_length=45)  # Field name made lowercase.
-    group_or_individual = models.CharField(db_column='Group_or_Individual', max_length=10)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'ed4all_incident'
-
-
-class Ed4AllIssue(models.Model):
-    issue_name = models.CharField(db_column='Issue_Name', max_length=45)  # Field name made lowercase.
-    issue_type = models.CharField(db_column='Issue_Type', max_length=55)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'ed4all_issue'
-
-
-class Ed4AllRequest(models.Model):
-    request_type = models.CharField(db_column='Request_Type', max_length=45)  # Field name made lowercase.
-    time_appointment = models.DateTimeField(db_column='Time_Appointment')  # Field name made lowercase.
-    time_submitted_appointment = models.DateTimeField(db_column='Time_Submitted_Appointment')  # Field name made lowercase.
-    counselor_id = models.ForeignKey('Ed4AllStudentAdvisorCounselor', models.DO_NOTHING, db_column='Counselor_ID_id')  # Field name made lowercase.
-    student_id = models.ForeignKey('Ed4AllStudent', models.DO_NOTHING, db_column='Student_ID_id')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'ed4all_request'
-
-
-class Ed4AllStudent(models.Model):
-    student_name = models.CharField(db_column='Student_Name', max_length=45)  # Field name made lowercase.
-    email_address = models.CharField(db_column='Email_Address', max_length=45)  # Field name made lowercase.
-    counselor_id = models.ForeignKey('Ed4AllStudentAdvisorCounselor', models.DO_NOTHING, db_column='Counselor_ID_id')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'ed4all_student'
-
-
-class Ed4AllStudentAdvisorCounselor(models.Model):
-    counselor_name = models.CharField(db_column='Counselor_Name', max_length=45)  # Field name made lowercase.
-    email_address = models.CharField(db_column='Email_Address', max_length=55)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'ed4all_student_advisor_counselor'
-
-
-class Ed4AllStudentIncident(models.Model):
-    faculty_id = models.ForeignKey(Ed4AllFaculty, models.DO_NOTHING, db_column='Faculty_ID_id')  # Field name made lowercase.
-    incident_id = models.ForeignKey(Ed4AllIncident, models.DO_NOTHING, db_column='Incident_ID_id')  # Field name made lowercase.
-    student_id = models.ForeignKey(Ed4AllStudent, models.DO_NOTHING, db_column='Student_ID_id')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'ed4all_student_incident'
-
-
-class Ed4AllStudentIssue(models.Model):
-    issue_id = models.ForeignKey(Ed4AllIssue, models.DO_NOTHING, db_column='Issue_ID_id')  # Field name made lowercase.
-    student_id = models.ForeignKey(Ed4AllStudent, models.DO_NOTHING, db_column='Student_ID_id')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'ed4all_student_issue'
-
-
-class Ed4AllStudentProfile(models.Model):
-    gpa = models.DecimalField(db_column='GPA', max_digits=3, decimal_places=2)  # Field name made lowercase.
-    current_semester = models.CharField(db_column='Current_Semester', max_length=45)  # Field name made lowercase.
-    program = models.CharField(db_column='Program', max_length=45)  # Field name made lowercase.
-    school = models.CharField(db_column='School', max_length=45)  # Field name made lowercase.
-    student_id = models.ForeignKey(Ed4AllStudent, models.DO_NOTHING, db_column='Student_ID_id')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'ed4all_student_profile'
+        db_table = 'studentprofile'
