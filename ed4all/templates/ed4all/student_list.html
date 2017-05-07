@@ -7,13 +7,12 @@
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
     <style>
         body {
-            font: 400 15px Lato, sans-serif;
+            font: 400 15px Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
             line-height: 1.8;
             color: #818181;
         }
         h2 {
             font-size: 24px;
-
             color: #000000;
             font-weight: 100;
             margin-bottom: 30px;
@@ -27,13 +26,16 @@
             margin-bottom: 30px;
         }
         .jumbotron {
-            background-color: #fff;
+            background-color: transparent;
             color: #000;
-            padding: 40px 25px;
+            padding: 50px 25px;
             font-family: font-family: Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
         }
         .container-fluid {
-            padding: 20px 50px;
+            padding: 8px 50px;
+        }
+        .container-down {
+            padding: 50px 50px;
         }
         .thumbnail img {
             width: 100%;
@@ -41,10 +43,10 @@
             margin-bottom: 10px;
         }
         .carousel-indicators li {
-            border-color: #f4511e;
+            border-color: #1E90FF;
         }
         .carousel-indicators li.active {
-            background-color: #f4511e;
+            background-color: #1E90FF;
         }
         .item h4 {
             font-size: 19px;
@@ -57,18 +59,17 @@
             font-style: normal;
         }
         .panel {
-            border: 1px solid #f4511e;
+            border: 1px solid #000000;
             border-radius:0 !important;
             transition: box-shadow 0.5s;
-            font-family: Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
         }
         .panel:hover {
             box-shadow: 5px 0px 40px rgba(0,0,0, .2);
         }
         .panel-footer .btn:hover {
-            border: 1px solid #1E90FF;
+            border: 1px solid #000000;
             background-color: #fff !important;
-            color: #f4511e;
+            color: #000000;
         }
         .panel-footer h3 {
             font-size: 32px;
@@ -79,25 +80,25 @@
         }
         .panel-footer .btn {
             margin: 15px 0;
-            background-color: #1E90FF;
+            background-color: #000000;
             color: #fff;
         }
         .navbar {
             margin-bottom: 0;
-            background-color: #1E90FF;
+            background-color: #000000;
             z-index: 9999;
             border: 0;
-            font-size: 18px !important;
+            font-size: 16px !important;
             line-height: 1.42857143 !important;
             letter-spacing: 3px;
-            border-radius: 0;
-            font-family: Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+            border-radius: 20px;
+            font-family: font-family: Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
         }
         .navbar li a, .navbar .navbar-brand {
             color: #fff !important;
         }
         .navbar-nav li a:hover, .navbar-nav li.active a {
-            color: #1E90FF !important;
+            color: #000000 !important;
             background-color: #fff !important;
         }
         .navbar-default .navbar-toggle {
@@ -107,7 +108,7 @@
         footer .glyphicon {
             font-size: 20px;
             margin-bottom: 20px;
-            color: #1E90FF;
+            color: #000000;
         }
         @keyframes slide {
             0% {
@@ -135,46 +136,45 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Counselor</a>
+            <a class="navbar-brand" href="#">COUNSELOR</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="{% url 'ed4all:counselor_home' %}">Home</a></li>
-            <li><a href="{% url 'ed4all:incident_list' %}">Incident</a></li>
-            <li class="active"><a href="{% url 'ed4all:student_list' %}">Student</a></li>
-            <li><a href="{% url 'home' %}">LogOut</a></li>
+            <li><a href="{% url 'ed4all:counselor_home' %}">HOME</a></li>
+            <li><a href="{% url 'ed4all:incident_list' %}">INCIDENTS</a></li>
+            <li class="active"><a href="{% url 'ed4all:student_list' %}">STUDENTS</a></li>
+            <li><a href="{% url 'ed4all:incident_list' %}">SERVICES</a> </li>
+            <li><a href="{% url 'index' %}">LOG OUT</a></li>
         </ul>
     </div>
 </nav>
 
 <div class="jumbotron text-center">
-    <h1>Student List</h1>
+    <h1>All Students</h1>
 </div>
 
 <div class="panel panel-default">
-    {% for s in student %}
-    <div class="panel-heading">
-        <h3 class="text-center">ID: {{s.studentid}}</h3>
-        <div class="text-center" style="padding-bottom:10px;">
-            <a href="{% url 'ed4all:student_view' s.studentid %}"
-               data-original-title="View Detail" class="btn btn-info btn-sm" type="button" >
-                View Detail</a>
-        </div>
-    </div>
-    <div class="panel-body">
-        <table class="table table-bordered table-hover">
+    <div class="container">
+         <div class="text-center">
+             <table class="table table-bordered table-hover">
             <tbody>
-            <tr>
-                <td>StudentID</td>
-                <td>{{s.studentid}}</td>
+             <tr class="panel-heading">
+                <td>Student ID</td>
+                <td>Student Name</td>
+                 <td>Program</td>
+                 <td>View Detail</td>
             </tr>
-            <tr>
-                <td>Name</td>
-                <td>{{s.studentfname}} {{s.studentlname}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    {% for s in student %}
+             <tr>
+                 <td>{{s.studentid}}</td>
+                 <td>{{s.studentfname}} {{s.studentlname}}</td>
+                 <td>{{s.program}}</td>
+                 <td><a href="{% url 'ed4all:student_view' s.studentid %}" data-original-title="View Detail" class="btn btn-primary btn-sm" type="button" >
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                View</a>
+                 </td>
+             </tr>
     {% endfor %}
+            </tbody>
 </div>
 </body>
 </html>

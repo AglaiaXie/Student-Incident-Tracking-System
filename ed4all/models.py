@@ -61,6 +61,7 @@ class Incident(models.Model):
     location = models.CharField(max_length=45, blank=True, null=True)
     educatorid = models.ForeignKey(Educator, models.DO_NOTHING, db_column='educatorID_id', blank=True, null=True)  # Field name made lowercase.
     counselorid = models.ForeignKey(Counselor, models.DO_NOTHING, db_column='counselorID_id', blank=True, null=True)  # Field name made lowercase.
+    status = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return str(self.incidentid)
