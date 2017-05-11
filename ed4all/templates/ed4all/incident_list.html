@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
+    {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{% static 'ed4all/sorttable.js' %}"></script>
     <style>
         body {
             font: 400 15px Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
@@ -27,7 +29,7 @@
         .jumbotron {
             background-color: transparent;
             color: #000;
-            padding: 50px 25px;
+            padding: 20px 20px;
             font-family: font-family: Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
         }
         .container-fluid {
@@ -81,6 +83,12 @@
             margin: 15px 0;
             background-color: #000000;
             color: #fff;
+        }
+         .panel .panel-heading {
+            background-color:#eee;
+            color:#666666;
+            font-weight: bold;
+            cursor: default;
         }
         .navbar {
             margin-bottom: 0;
@@ -136,28 +144,28 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">COUNSELOR</a>
+            <a class="navbar-brand">COUNSELOR</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="{% url 'ed4all:counselor_home' %}">HOME</a></li>
             <li class="active"><a href="{% url 'ed4all:incident_list' %}">INCIDENTS</a></li>
             <li><a href="{% url 'ed4all:student_list' %}">STUDENTS</a></li>
-            <li><a href="{% url 'ed4all:incident_list' %}">SERVICES</a> </li>
+            <!--<li><a href="{% url 'ed4all:incident_list' %}">SERVICES</a> </li> -->
             <li><a href="{% url 'index' %}">LOG OUT</a></li>
         </ul>
     </div>
 </nav>
 
 <div class="jumbotron text-center">
-    <h1>All Incidents</h1>
+    <h1>Incidents</h1>
 </div>
 
-<div class="panel panel-default">
+<div class="panel">
     <div class="container">
          <div class="text-center">
-             <table class="table table-bordered table-hover">
+             <table class="table table-bordered table-hover sortable">
             <tbody>
-             <tr class="panel-heading">
+             <thead class="panel-heading">
                 <td>Incident ID</td>
                 <td>Student ID</td>
                  <td>Educator ID</td>
@@ -166,7 +174,7 @@
                  <td>Location</td>
                  <td>Incident Status</td>
                  <td>Update/Delete</td>
-            </tr>
+            </thead>
              {% for app in incident %}
              <tr>
                 <td>{{app.incidentid}}</td>
@@ -176,7 +184,8 @@
                 <td>{{app.incidenttype}}</td>
                  <td>{{app.location}}</td>
                 <td>{{app.status}}</td>
-                 <td><a href="{% url 'ed4all:incident_edit' app.incidentid %}"
+                 <td>
+                    <a href="{% url 'ed4all:incident_edit' app.incidentid %}"
                data-original-title="Edit incident" class="btn btn-info btn-sm" type="button" >
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                 Edit</a>

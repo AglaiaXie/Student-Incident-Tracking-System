@@ -13,6 +13,11 @@ urlpatterns = [
     # =========== educator login ===========
     url(r'^educator_home', views.educator_home, name='educator_home'),
     url(r'^educator_create_incident', views.educator_create_incident, name='educator_create_incident'),
+    url(r'^educator_student_list', views.educator_student_list, name='educator_student_list'),
+    url(r'^educator_incident_list', views.educator_incident_list, name='educator_incident_list'),
+    url(r'^educator_student_view/(?P<pk>[\w-]+)$', views.educator_student_view, name='educator_student_view'),
+    url(r'^educator_incident_edit/(?P<pk>[\w-]+)/$', views.educator_incident_edit, name='educator_incident_edit'),
+    url(r'^educator_incident_delete/(?P<pk>[\w-]+)$', views.educator_incident_delete, name='educator_incident_delete'),
 
     # =========== counselor login ===========
     url(r'^counselor_home', views.counselor_home, name='counselor_home'),

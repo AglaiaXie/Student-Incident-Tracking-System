@@ -142,9 +142,9 @@
         </div>
         <ul class="nav navbar-nav">
             <li><a href="{% url 'ed4all:counselor_home' %}">HOME</a></li>
-            <li class="active"><a href="{% url 'ed4all:incident_list' %}">INCIDENTS</a></li>
-            <li><a href="{% url 'ed4all:student_list' %}">STUDENTS</a></li>
-            <li><a href="{% url 'ed4all:incident_list' %}">SERVICES</a> </li>
+            <li class="active"><a href="{% url 'ed4all:incident_list' %}">INCIDENT</a></li>
+            <li><a href="{% url 'ed4all:student_list' %}">STUDENT</a></li>
+            <li><a href="{% url 'ed4all:incident_list' %}">SERVICE</a> </li>
             <li><a href="{% url 'index' %}">LOG OUT</a></li>
         </ul>
     </div>
@@ -202,6 +202,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="bot-border"></div>
+
                         <div class="col-sm-5 col-xs-6 tital " >Incident Type: </div>
                         <div class="col-sm-7">{{ i.incidenttype}}</div>
 
@@ -209,11 +210,6 @@
                         <div class="bot-border"></div>
                         <div class="col-sm-5 col-xs-6 tital " > Incident Location:</div>
                         <div class="col-sm-7"> {{i.location}}</div>
-
-                        <div class="clearfix"></div>
-                        <div class="bot-border"></div>
-                        <div class="col-sm-5 col-xs-6 tital " > Incident Status:</div>
-                        <div class="col-sm-7"> {{i.status}}</div>
 
                     </div>
                 </div>

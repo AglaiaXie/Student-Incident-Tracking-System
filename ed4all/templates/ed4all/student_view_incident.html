@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
+    {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{% static 'ed4all/sorttable.js' %}"></script>
     <style>
         body {
             font: 400 15px Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
@@ -27,7 +29,7 @@
         .jumbotron {
             background-color: transparent;
             color: #000;
-            padding: 50px 25px;
+            padding: 20px 20px;
             font-family: font-family: Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
         }
         .container-fluid {
@@ -82,6 +84,12 @@
             background-color: #000000;
             color: #fff;
         }
+        .panel .panel-heading {
+            background-color:#eee;
+            color:#666666;
+            font-weight: bold;
+            cursor: default;
+        }
         .navbar {
             margin-bottom: 0;
             background-color: #000000;
@@ -109,6 +117,7 @@
             margin-bottom: 20px;
             color: #000000;
         }
+
         @keyframes slide {
             0% {
                 opacity: 0;
@@ -136,26 +145,25 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Student</a>
+            <a class="navbar-brand">Student</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="{% url 'ed4all:student_home' %}">HOME</a></li>
-            <li class="active"><a href="{% url 'ed4all:student_view_incident' %}">INCIDENTS</a></li>
-            <li><a href="{% url 'ed4all:student_view_detail' %}">PROFILE</a></li>
+            <li class="active"><a href="{% url 'ed4all:student_view_incident' %}">MY INCIDENTS</a></li>
+            <li><a href="{% url 'ed4all:student_view_detail' %}">MY PROFILE</a></li>
             <li><a href="{% url 'index' %}">LOG OUT</a></li>
         </ul>
     </div>
 </nav>
 <div class="jumbotron text-center">
-    <h1>Incidents History</h1>
+    <h1>My Incident History</h1>
 </div>
 <div class="panel panel-default">
     <div class="container">
          <div class="text-center">
-             <table class="table table-bordered table-hover">
+             <table class="table table-bordered table-hover sortable">
             <tbody>
              <tr class="panel-heading">
-                <td>Student ID</td>
                 <td>Incident ID</td>
                  <td>Educator ID</td>
                  <td>Counselor ID</td>
@@ -166,7 +174,6 @@
 
     {% for app in incident %}
              <tr>
-                <td>{{app.studentid}}</td>
                 <td>{{app.incidentid}}</td>
                 <td>{{app.educatorid}}</td>
                 <td>{{app.counselorid}}</td>

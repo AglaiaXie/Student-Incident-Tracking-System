@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.forms import ModelForm
 from django.views.decorators.csrf import csrf_exempt
 from django import forms
+from django.core.mail import send_mail
 
 
 # ========== home =========
@@ -22,8 +23,12 @@ def home(request, template_name='ed4all/home.html'):
 class IncidentForm(ModelForm):
     class Meta:
         model = Incident
-        fields = ['incidentid', 'studentid', 'incidenttype', 'location', 'educatorid', 'counselorid']
+        fields = ['incidentid', 'studentid', 'incidenttype', 'location', 'educatorid', 'counselorid', 'status']
 
+class IncidentEditForm(ModelForm):
+    class Meta:
+        model = Incident
+        fields = [ 'studentid', 'incidenttype', 'location', 'educatorid', 'counselorid', 'status']
 
 class StudentForm(ModelForm):
     class Meta:
@@ -171,6 +176,7 @@ class CounselorForm(ModelForm):
         fields = '__all__'
 
 class EducatorCreateForm(ModelForm):
+    incidentid = forms.CharField(label='incidentid')
     educatorid = forms.ModelChoiceField(queryset=Educator.objects.all(), label='ID')
     studentid = forms.ModelChoiceField(queryset=Student.objects.all(), required=False, label='Student ID')
     counselorid = forms.ModelChoiceField(queryset=Counselor.objects.all(), required=False,
@@ -180,7 +186,7 @@ class EducatorCreateForm(ModelForm):
 
     class Meta:
         model = Incident
-        fields = ['educatorid', 'studentid', 'counselorid', 'incidenttype', 'location']
+        fields = ['incidentid','educatorid', 'studentid', 'counselorid', 'incidenttype', 'location', 'status']
         widgets = {
             'incidenttype': forms.TextInput,
             'location': forms.TextInput
@@ -227,7 +233,7 @@ def incident_view(request, pk, template_name='ed4all/incident_view.html'):
 
 def incident_edit(request, pk, template_name='ed4all/incident_edit.html'):
     incident= get_object_or_404(Incident, incidentid=pk)
-    form = IncidentForm(request.POST or None, instance=incident)
+    form = IncidentEditForm(request.POST or None, instance=incident)
     if form.is_valid():
         form.save()
         return redirect('ed4all:incident_list')
@@ -284,4 +290,53 @@ def educator_create_incident(request, template_name='ed4all/educator_create_inci
         form.save()
         return redirect('ed4all:educator_home')
     ctx["form"] = form
+    return render(request, template_name, ctx)
+
+
+# ============ educator views students ==========
+def educator_student_list(request,template_name='ed4all/educator_student_list.html'):
+    student = Student.objects.all()
+    ctx = {}
+    ctx['student'] = student
+    return render(request, template_name, ctx)
+
+# ============ educator views incidents ==========
+def educator_incident_list(request,template_name='ed4all/educator_incident_list.html'):
+    eid = request.session['eid']
+    incident = Incident.objects.filter(educatorid=eid)
+    ctx={}
+    ctx["incident"] = incident
+    return render(request,template_name,ctx)
+
+# ============ educator views student profile ==========
+def educator_student_view(request, pk, template_name='ed4all/educator_student_view.html'):
+    student= get_object_or_404(Student, studentid=pk)
+    trackrep = get_object_or_404(Student,studentid=student.trackrepid)
+    profile = Studentprofile.objects.filter(studentid=pk)
+    ctx = {}
+    ctx["student"] = student
+    ctx["trackrep"] = trackrep
+    ctx["profile"] = profile
+    return render(request, template_name, ctx)
+
+# ============= educator edit his incident =============
+
+def educator_incident_edit(request, pk, template_name='ed4all/educator_incident_edit.html'):
+    incident= get_object_or_404(Incident, incidentid=pk)
+    form = IncidentEditForm(request.POST or None, instance=incident)
+    if form.is_valid():
+        form.save()
+        return redirect('ed4all:educator_incident_list')
+    ctx = {}
+    ctx["form"] = form
+    ctx["incident"] = incident
+    return render(request, template_name, ctx)
+
+def educator_incident_delete(request, pk, template_name='ed4all/educator_incident_delete.html'):
+    incident = get_object_or_404(Incident, incidentid=pk)
+    if request.method=='POST':
+        incident.delete()
+        return redirect('ed4all:educator_incident_list')
+    ctx = {}
+    ctx["incident"] = incident
     return render(request, template_name, ctx)

@@ -1,0 +1,21 @@
+branch-defaults:
+  default:
+    environment: edu4autest
+    group_suffix: null
+environment-defaults:
+  edu4autest:
+    branch: null
+    repository: null
+global:
+  application_name: education4au
+  branch: null
+  default_ec2_keyname: Education4
+  default_platform: Python 3.4
+  default_region: us-west-2
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: null
+  repository: null
+  sc: null
+  workspace_type: Application

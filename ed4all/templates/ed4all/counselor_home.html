@@ -30,7 +30,7 @@
         .jumbotron {
             background-color: transparent;
             color: #000;
-            padding: 50px 25px;
+            padding: 20px 20px;
             font-family: font-family: Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
         }
         .container-fluid {
@@ -138,54 +138,52 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">COUNSELOR</a>
+            <a class="navbar-brand">COUNSELOR</a>
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="{% url 'ed4all:counselor_home' %}">HOME</a></li>
             <li><a href="{% url 'ed4all:incident_list' %}">INCIDENTS</a></li>
             <li><a href="{% url 'ed4all:student_list' %}">STUDENTS</a></li>
-            <li><a href="{% url 'ed4all:incident_list' %}">SERVICES</a> </li>
+            <!--<li><a href="{% url 'ed4all:incident_list' %}">SERVICES</a> </li> -->
             <li><a href="{% url 'index' %}">LOG OUT</a></li>
         </ul>
     </div>
 </nav>
 
 <div class="jumbotron text-center">
-    <h1>This is Counselor System</h1>
-    <p>Welcome, {{counselor.counselorfname}}</p>
+    <h1>Counselor Dashboard</h1>
+    <p>Welcome {{counselor.counselorlname}} {{counselor.counselorfname}}!</p>
 </div>
 <div class="container text-center">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <a href="{% url 'ed4all:incident_list' %}">
                 <button type="button" class="btn btn-default btn-block">
                     <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
-                    <h2>Click to View Incidents</h2>
+                    <h2>View/Update Incidents</h2>
                 </button>
             </a>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <a href="{% url 'ed4all:student_list' %}">
                 <button type="button" class="btn btn-default btn-block">
                     <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-                    <h2>Click to View Students</h2>
+                    <h2>View Students</h2>
                 </button>
             </a>
         </div>
-        <div class="col-sm-4">
+        <!--<div class="col-sm-4">
             <a href="{% url 'ed4all:incident_list' %}">
                 <button type="button" class="btn btn-default btn-block">
                     <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
                     <h2>Click to Sort Information</h2>
                 </button>
             </a>
+        </div>-->
     </div>
 </div>
 
 <footer class="container-down text-center">
-    <a href="#myPage" title="To Top">
-        <span class="glyphicon glyphicon-chevron-up"></span>
-    </a>
 </footer>
 </body>
 </html>
